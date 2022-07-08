@@ -14,6 +14,7 @@ const auth = require('./middlewares/auth');
 const NotFoundError = require('./errors/NotFoundError');
 const { createUser, login } = require('./controllers/users');
 const { emailRegex, linkRegex } = require('./utils/constants');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
 
@@ -33,6 +34,8 @@ app.use(cookieParser());
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(requestLogger);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -57,6 +60,8 @@ app.use('/cards', auth, cardsRoute);
 app.use((req, res, next) => {
   next(new NotFoundError('Путь не найден.'));
 });
+
+app.use(errorLogger);
 
 app.use(errors({ message: 'Переданы некорректные данные.' }));
 
