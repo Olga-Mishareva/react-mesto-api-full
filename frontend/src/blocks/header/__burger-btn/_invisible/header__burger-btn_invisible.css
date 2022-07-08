@@ -1,0 +1,7 @@
+
+
+@media screen and (max-width: 540px) {
+  .header__burger-btn_invisible {
+    display: none;
+  }
+}

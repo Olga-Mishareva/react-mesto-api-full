@@ -1,0 +1,10 @@
+/* .header__container_logged {
+
+} */
+
+@media screen and (max-width: 540px) {
+  .header__container_logged {
+    flex-direction: column-reverse;
+    align-items: center;
+  }
+}

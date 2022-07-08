@@ -1,0 +1,16 @@
+.tooltip__message {
+  color: #000000;
+  font-weight: 900;
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  margin: 0 36px;
+}
+
+@media screen and (max-width: 540px) {
+  .tooltip__message {
+    font-size: 18px;
+    line-height: 22px;
+    margin: 0 22px;
+  }
+}

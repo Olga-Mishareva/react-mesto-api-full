@@ -1,0 +1,11 @@
+.popup__close-button_type_show {
+  top: -40px;
+  left: calc(100% + 8px);
+}
+
+@media screen and (max-width: 540px) {
+  .popup__close-button_type_show {
+    top: -36px;
+    left: calc(100% - 20px);
+  }
+}

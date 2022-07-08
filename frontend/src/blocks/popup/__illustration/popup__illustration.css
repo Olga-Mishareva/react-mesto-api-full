@@ -1,0 +1,8 @@
+.popup__illustration {
+  position: absolute;
+  max-width: 75vw;
+  max-height: 75vh;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

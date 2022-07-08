@@ -1,0 +1,22 @@
+.header__logout_active {
+  display: inline;
+  color: #A9A9A9;;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 22px;
+  margin: 0 0 0 24px;
+  border: none;
+  background-color: #000000;
+  padding: 0;
+}
+
+.header__logout_active:hover {
+  cursor: pointer;
+  opacity: .6;
+}
+
+@media screen and (max-width: 540px) {
+  .header__logout_active{
+    margin: 18px 0 0 0;
+  }
+}

@@ -1,0 +1,23 @@
+.header__container {
+  border-bottom: 1px solid #545454;
+  padding-bottom: 41px;
+  max-width: 880px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+@media screen and (max-width: 920px) {
+  .header__container {
+    max-width: 90%;
+  }
+}
+
+@media screen and (max-width: 475px) {
+  .header__container {
+    max-width: 100%;
+    padding-bottom: 32px;
+  }
+}

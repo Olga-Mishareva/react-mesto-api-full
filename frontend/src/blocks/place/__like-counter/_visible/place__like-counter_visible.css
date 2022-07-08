@@ -1,0 +1,9 @@
+.place__like-counter_visible {
+  display: block;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 16px;
+  color: #000000;
+  text-align: center;
+  margin-top: 3px;
+}

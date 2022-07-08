@@ -1,0 +1,5 @@
+@media screen and (max-width: 540px) {
+  .header__auth-container_hidden {
+    display: none;
+  }
+}

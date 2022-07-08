@@ -1,0 +1,8 @@
+.page {
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+  color: #ffffff;
+  text-rendering: optimizeLegibility;
+  background-color: #000000;
+  min-height: 100vh;
+}
