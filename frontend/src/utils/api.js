@@ -11,10 +11,10 @@ class Api {
 
   getUserData() {
     return fetch(`${this._baseUrl}/users/me`, {
-      // credentials: 'include',  // посылает токен в куки вместе с запросом. Разобраться. Применяется, если бэк и фронт на разных доменах.
-      headers: {
-        authorization: this._authorization
-      }
+      credentials: 'include',  // посылает токен в куки вместе с запросом. Разобраться. Применяется, если бэк и фронт на разных доменах.
+      // headers: {
+      //   authorization: this._authorization
+      // }
     })
     .then(res => {
       return this._getResponseData(res);
@@ -101,9 +101,9 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-39',
+  baseUrl: 'https://api.mesto.om.nomoredomains.xyz',
   headers: {
-    authorization: 'a10d74b1-4032-4ec5-9837-4b98c81dc7b9',
+    // authorization: 'a10d74b1-4032-4ec5-9837-4b98c81dc7b9',
     'Content-Type': 'application/json'
   }
 });
