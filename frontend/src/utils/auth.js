@@ -1,4 +1,4 @@
-export const baseUrl = 'https://api.mesto.om.nomoredomains.xyz';
+export const baseUrl = 'http://localhost:3000';
 
 function getResponseData(res) {
   if(res.ok) {
@@ -15,7 +15,11 @@ function getResponseData(res) {
 export function register(password, email) {
   return fetch(`${baseUrl}/signup`, {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
+    headers: {
+      // origin: 'http://localhost:3001',
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({ password, email })
   })
   .then(res => getResponseData(res))
@@ -24,6 +28,7 @@ export function register(password, email) {
 export function authorize(password, email) {
   return fetch(`${baseUrl}/signin`, {
     method: 'POST',
+    credentials: 'include',
     headers: {"Content-Type": "application/json" },
     body: JSON.stringify({password, email})
   })
@@ -36,7 +41,7 @@ export function getContent(token) {
     method: 'GET',
     headers: {
       "Content-Type": "application/json",
-      // "Authorization" : `Bearer ${token}`
+      "Authorization" : `Bearer ${token}`
     }
   })
   .then(res => getResponseData(res)) 
