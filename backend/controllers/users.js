@@ -8,41 +8,6 @@ const BadRequestError = require('../errors/BadRequestError');
 const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
 
-module.exports.login = (req, res, next) => {
-  const { email, password } = req.body;
-
-  User.findOne({ email }).select('+password')
-    .then((user) => {
-      if (!user) {
-        throw new UnauthorizedError('Неправильные почта или пароль.');
-      }
-      bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            throw new UnauthorizedError('Неправильные почта или пароль.');
-          }
-          const token = jwt.sign(
-            { _id: user._id },
-            'ca18bc04497261456f689f0693cbc10609a66e49e88ebe23f9e2b48483616894',
-          );
-          res.cookie('jwt', token, {
-            maxAge: 3600000 * 24 * 7,
-            httpOnly: true,
-            sameSite: true,
-          })
-            .send({
-              name: user.name,
-              about: user.about,
-              avatar: user.avatar,
-              email: user.email,
-              _id: user._id,
-            });
-        })
-        .catch(next);
-    })
-    .catch(next);
-};
-
 module.exports.createUser = (req, res, next) => {
   const {
     name, about, avatar, email, password,
@@ -74,6 +39,41 @@ module.exports.createUser = (req, res, next) => {
       }
       next(err);
     });
+};
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email }).select('+password')
+    .then((user) => {
+      if (!user) {
+        throw new UnauthorizedError('Неправильные почта или пароль.');
+      }
+      bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            throw new UnauthorizedError('Неправильные почта или пароль.');
+          }
+          const token = jwt.sign(
+            { _id: user._id },
+            'ca18bc04497261456f689f0693cbc10609a66e49e88ebe23f9e2b48483616894',
+          );
+          res.cookie('jwt', token, {
+            maxAge: 3600000 * 24 * 7,
+            httpOnly: true,
+            sameSite: true, // ?????
+          })
+            .send({
+              name: user.name,
+              about: user.about,
+              avatar: user.avatar,
+              email: user.email,
+              _id: user._id,
+            });
+        })
+        .catch(next);
+    })
+    .catch(next);
 };
 
 module.exports.getUsers = (req, res, next) => {
