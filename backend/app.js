@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser'); // for cookie
-// const cors = require('cors');
+const cors = require('cors');
 const { celebrate, Joi, errors } = require('celebrate');
 
 const usersRoute = require('./routes/users');
@@ -39,10 +39,12 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(requestLogger);
 
-// app.use(cors());
-// app.options('*', cors());
+app.use(cors({
+  origin: ['http://localhost:3001', 'mesto.om.nomoredomains.xyz'],
+  credentials: true,
+}));
 
-app.use(setResponseHeaders);
+// app.use(setResponseHeaders);
 
 app.post('/signin', celebrate({
   body: Joi.object().keys({
