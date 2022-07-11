@@ -4,10 +4,10 @@ import { CurrentUserContext } from "../contexts/CurrentUserContext";
 function Card({ card, onCardClick, onCardLike, onConfirmDelete }) {
   const currentUser = React.useContext(CurrentUserContext);
 
-  const isOwn = (card.ownerId || card.owner._id) === currentUser.userId;
+  const isOwn = (card.ownerId || card.owner) === currentUser.userId;
   const trashButton = `place__trash ${isOwn ? 'place__trash_type_active' : ''}`;
 
-  const isLiked = card.likes.some(like => like._id === currentUser.userId);
+  const isLiked = card.likes.some(like => like === currentUser.userId);
   const strokeButton = `place__stroke ${isLiked ? 'place__stroke_liked' : ''}`;
 
   const likeCounter = `place__like-counter ${card.likes.length > 0 ? 'place__like-counter_visible' : ''}`

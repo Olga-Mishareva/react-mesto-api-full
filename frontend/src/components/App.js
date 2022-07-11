@@ -68,6 +68,7 @@ function App() {
     if(loggedIn) {
       api.getUserData()
       .then(data => {
+        // console.log(data) // true
         setCurrentUser({ ...currentUser, 
           userName: data.name, 
           userInfo: data.about, 
@@ -103,13 +104,14 @@ function App() {
     if(loggedIn) {
       api.getUsersCards()
       .then(res => {
-        const usersCards = res.map(card => {
+        // console.log(res) // true
+        const usersCards = res.reverse().map(card => {
           return {
             name: card.name,
             link: card.link,
             _id: card._id,
             likes: card.likes,
-            ownerId: card.owner._id,
+            ownerId: card.owner,
           }
         });
         setCards(usersCards);
@@ -130,10 +132,13 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(like => like._id === currentUser.userId);
+    // console.log(card) // true
+    const isLiked = card.likes.some(like => like === currentUser.userId);
     api.changeLikeCardStatus(card._id, isLiked)
       .then(likedCard => {
         setCards(() => cards.map(el => {
+          // console.log(likedCard) // true
+          // console.log(el)  // true
           return el._id === likedCard._id ? likedCard : el;
         }));
         // перебираем массив cards и заменяем в стейте только одну карточку, 
@@ -193,7 +198,8 @@ function App() {
     setLoading(true); 
     return register(password, email)
       .then(res => {
-        if(res.data._id) {
+        console.log(res);
+        if(res._id) {
           setIsSignup(true);
           setIsRegisterPopupOpen(true);
           setTimeout(() => {
@@ -218,10 +224,12 @@ function App() {
     setLoading(true);
     return authorize(password, email)
       .then(data => {
-        if(data.token) {
-          localStorage.setItem('jwt', data.token);
-          checkToken();
-        }
+        // console.log(data)
+        // if(data.token) {
+        //   localStorage.setItem('jwt', data.token);
+        //   checkToken();
+        // }
+        checkToken();
       })
       .catch(err => {
         console.log(err.message);
@@ -233,15 +241,16 @@ function App() {
   }
 
   function checkToken() {
-    if(localStorage.getItem('jwt')) {
-      let token = localStorage.getItem('jwt');
-      getContent(token)
+    // if(localStorage.getItem('jwt')) {
+      // let token = localStorage.getItem('jwt');
+      getContent()
         .then(res => {
-          setEmail(res.data.email);
+          // console.log(res)
+          setEmail(res.email);
           setLoggedIn(true);
         })
         .catch(err => console.log(err.message)); 
-    }
+    // }
   }
 
   useEffect(() => {
