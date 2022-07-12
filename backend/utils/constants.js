@@ -7,5 +7,3 @@ module.exports.allowedCors = [
   'http://localhost:3001',
   'mesto.om.nomoredomains.xyz',
 ];
-
-module.exports.DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
