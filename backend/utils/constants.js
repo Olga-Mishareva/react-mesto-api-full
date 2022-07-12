@@ -4,6 +4,7 @@ module.exports.emailRegex = /^([a-zA-Z0-9_\-\\.]+)@([a-zA-Z0-9_\-\\.]+)\.([a-zA-
 module.exports.linkRegex = /^https?:\/\/(www\.)?([\w\-\\.]+)\.([a-z]{2,})([\w\\.\-\\~:\\/\\?#\\[\]@!\\$&'\\(\\)\\*\\+\\,;\\=]*)#?$/;
 
 module.exports.allowedCors = [
+  'http://localhost:3000',
   'http://localhost:3001',
-  'mesto.om.nomoredomains.xyz',
+  'https://mesto.om.nomoredomains.xyz',
 ];
