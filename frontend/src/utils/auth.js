@@ -1,4 +1,4 @@
-export const baseUrl = 'http://localhost:3000';
+export const baseUrl = 'api.mesto.om.nomoredomains.xyz';
 
 function getResponseData(res) {
   if(res.ok) {

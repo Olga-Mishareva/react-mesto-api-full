@@ -68,7 +68,6 @@ function App() {
     if(loggedIn) {
       api.getUserData()
       .then(data => {
-        // console.log(data) // true
         setCurrentUser({ ...currentUser, 
           userName: data.name, 
           userInfo: data.about, 
@@ -104,7 +103,6 @@ function App() {
     if(loggedIn) {
       api.getUsersCards()
       .then(res => {
-        // console.log(res) // true
         const usersCards = res.reverse().map(card => {
           return {
             name: card.name,
@@ -132,13 +130,10 @@ function App() {
   }
 
   function handleCardLike(card) {
-    // console.log(card) // true
     const isLiked = card.likes.some(like => like === currentUser.userId);
     api.changeLikeCardStatus(card._id, isLiked)
       .then(likedCard => {
         setCards(() => cards.map(el => {
-          // console.log(likedCard) // true
-          // console.log(el)  // true
           return el._id === likedCard._id ? likedCard : el;
         }));
         // перебираем массив cards и заменяем в стейте только одну карточку, 

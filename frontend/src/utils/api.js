@@ -2,7 +2,6 @@ class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
-    // this._authorization = this._headers.authorization;
   }
 
   _getResponseData(res) {
@@ -11,10 +10,8 @@ class Api {
 
   getUserData() {
     return fetch(`${this._baseUrl}/users/me`, {
-      credentials: 'include',  // посылает токен в куки вместе с запросом. Разобраться. Применяется, если бэк и фронт на разных доменах.
-      // headers: {
-      //   authorization: this._authorization
-      // }
+      // посылает токен в куки вместе с запросом.
+      credentials: 'include', 
     })
     .then(res => {
       return this._getResponseData(res);
@@ -55,9 +52,6 @@ class Api {
   getUsersCards() {
     return fetch(`${this._baseUrl}/cards`, {
       credentials: 'include',
-      // headers: {
-      //   authorization: this._authorization
-      // }
     })
     .then(res => {
       return this._getResponseData(res);
@@ -83,9 +77,6 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${cardId}`, {
       method: 'DELETE',
       credentials: 'include',
-      // headers: {
-      //   authorization: this._authorization
-      // }
     })
     .then(res => {
       return this._getResponseData(res);
@@ -96,9 +87,6 @@ class Api {
     return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
       method: isLiked ? 'DELETE' : 'PUT',
       credentials: 'include',
-      // headers: {
-      //   authorization: this._authorization
-      // }
     })
     .then(res => {
       return this._getResponseData(res);
@@ -107,11 +95,8 @@ class Api {
 }
 
 const api = new Api({
-  baseUrl: 'http://localhost:3000',
-  headers: {
-    // authorization: 'a10d74b1-4032-4ec5-9837-4b98c81dc7b9',
-    'Content-Type': 'application/json'
-  }
+  baseUrl: 'api.mesto.om.nomoredomains.xyz',
+  headers: { 'Content-Type': 'application/json' }
 });
 
 export default api;
