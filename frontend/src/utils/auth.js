@@ -2,7 +2,7 @@ export const baseUrl = 'http://localhost:3000';
 
 function getResponseData(res) {
   if(res.ok) {
-    return res.json();
+    return res.json(); 
   }
   else {
     return res.json()
@@ -15,9 +15,7 @@ function getResponseData(res) {
 export function register(password, email) {
   return fetch(`${baseUrl}/signup`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ password, email })
   })
   .then(res => getResponseData(res))
@@ -37,10 +35,16 @@ export function getContent() {
   return fetch(`${baseUrl}/users/me`, {
     credentials: 'include',
     method: 'GET',
-    headers: {
-      "Content-Type": "application/json",
-      // "Authorization" : `Bearer ${token}`
-    }
+    headers: { "Content-Type": "application/json" }
   })
   .then(res => getResponseData(res)) 
+}
+
+export function logout(email) {
+  return fetch(`${baseUrl}/signout`, {
+    credentials: 'include',
+    method: 'POST',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ email })
+  })
 }

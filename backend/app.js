@@ -14,7 +14,7 @@ const auth = require('./middlewares/auth');
 const setResponseHeaders = require('./middlewares/cors');
 
 const NotFoundError = require('./errors/NotFoundError');
-const { createUser, login } = require('./controllers/users');
+const { createUser, login, logout } = require('./controllers/users');
 const { emailRegex, linkRegex } = require('./utils/constants');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
@@ -65,6 +65,8 @@ app.post('/signup', celebrate({
 
 app.use('/users', auth, usersRoute);
 app.use('/cards', auth, cardsRoute);
+
+app.post('/signout', auth, logout);
 
 app.use((req, res, next) => {
   next(new NotFoundError('Путь не найден.'));

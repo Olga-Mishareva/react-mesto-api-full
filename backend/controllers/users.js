@@ -29,7 +29,7 @@ module.exports.createUser = (req, res, next) => {
         about: user.about,
         avatar: user.avatar,
         email: user.email,
-        _id: user._id,
+        _id: user._id.toString(),
       });
     })
     .catch((err) => {
@@ -61,7 +61,7 @@ module.exports.login = (req, res, next) => {
           res.cookie('jwt', token, {
             maxAge: 3600000 * 24 * 7,
             httpOnly: true,
-            sameSite: true, // ?????
+            sameSite: true,
           })
             .send({
               name: user.name,
@@ -72,6 +72,20 @@ module.exports.login = (req, res, next) => {
             });
         })
         .catch(next);
+    })
+    .catch(next);
+};
+
+module.exports.logout = (req, res, next) => {
+  const { email } = req.body;
+
+  User.findOne({ email })
+    .then(() => {
+      res.clearCookie('jwt', {
+        httpOnly: true,
+        sameSite: true,
+      })
+        .end();
     })
     .catch(next);
 };

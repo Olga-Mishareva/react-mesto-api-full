@@ -12,7 +12,7 @@ import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmPopup from "./ConfirmPopup";
 import api from "../utils/api";
-import { register, authorize, getContent } from "../utils/auth";
+import { register, authorize, getContent, logout } from "../utils/auth";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import InfoTooltip from "./InfoTooltip";
 
@@ -224,11 +224,12 @@ function App() {
     setLoading(true);
     return authorize(password, email)
       .then(data => {
-        // console.log(data)
-        // if(data.token) {
-        //   localStorage.setItem('jwt', data.token);
-        //   checkToken();
-        // }
+        if(data.email) {
+          // добавляем в localStorage, чтобы проверять, 
+          // нужно ли делать запрос по /users/me
+          localStorage.setItem('email', data.email);
+          checkToken();
+        }
         checkToken();
       })
       .catch(err => {
@@ -241,20 +242,19 @@ function App() {
   }
 
   function checkToken() {
-    // if(localStorage.getItem('jwt')) {
-      // let token = localStorage.getItem('jwt');
+    // нужно ли делать запрос по /users/me
+    if(localStorage.getItem('email')) {
       getContent()
         .then(res => {
-          // console.log(res)
           setEmail(res.email);
           setLoggedIn(true);
         })
         .catch(err => console.log(err.message)); 
-    // }
+    }
   }
 
   useEffect(() => {
-    checkToken();
+      checkToken();
   },[]);
 
   useEffect(() => {
@@ -264,10 +264,14 @@ function App() {
   }, [loggedIn]);
 
   function handleSignOut() {
-    localStorage.removeItem('jwt');
-    setEmail('');
-    setLoggedIn(false);
-    history.push('/sign-in');
+    return logout(email)
+      .then(() => {
+        localStorage.removeItem('email');
+        setEmail('');
+        setLoggedIn(false);
+        history.push('/sign-in');
+      })
+      .catch(err => console.log(err.message)); 
   }
 
   return (
