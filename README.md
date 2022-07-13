@@ -1,4 +1,20 @@
-# react-mesto-api-full
-Репозиторий для приложения проекта `Mesto`, включающий фронтенд и бэкенд части приложения со следующими возможностями: авторизации и регистрации пользователей, операции с карточками и пользователями. Бэкенд расположите в директории `backend/`, а фронтенд - в `frontend/`. 
+# Project Mesto. Frontend + Backend
+
+Repository for the project Mesto-application, including frontend and backend parts of the application with the following features: authorization and user registration, operations with cards and users. 
+
+It's possible to change profile name and description, add, delete and like photos, as well as open large-size photos.
+
+### Tech Stack
+
+* React
+* JS
+* JSX
+* CSS
+------
+* NodeJS
+* Express
+* MOngoDB
+* REST
   
-Пожалуйста, прикрепите в это описание ссылку на сайт, размещенный на Яндекс.Облаке.
+
+Show the project[https://mesto.om.nomoredomains.xyz/]
