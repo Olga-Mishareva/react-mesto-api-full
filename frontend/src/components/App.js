@@ -77,6 +77,7 @@ function App() {
       })
       .catch(err => console.log(err));
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn]);
 
   function handleUpdateUser(data) {
@@ -256,6 +257,7 @@ function App() {
     if(loggedIn) {
       history.push('/')
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loggedIn]);
 
   function handleSignOut() {
