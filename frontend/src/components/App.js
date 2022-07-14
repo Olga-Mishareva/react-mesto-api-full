@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
 import Header from "./Header";
 import Main from './Main';
@@ -11,7 +11,6 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmPopup from "./ConfirmPopup";
-import PageNotFound from "./PageNotFound";
 import api from "../utils/api";
 import { register, authorize, getContent, logout } from "../utils/auth";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -305,7 +304,7 @@ function App() {
             submitBtn={loading ? 'Вход...' : 'Войти'} />
         </Route>
         <Route path="*">
-          <PageNotFound />
+          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
         </Route>
       </Switch>
 
