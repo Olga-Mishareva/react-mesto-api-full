@@ -11,6 +11,7 @@ import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
 import AddPlacePopup from "./AddPlacePopup";
 import ConfirmPopup from "./ConfirmPopup";
+import PageNotFound from "./PageNotFound";
 import api from "../utils/api";
 import { register, authorize, getContent, logout } from "../utils/auth";
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
@@ -302,6 +303,9 @@ function App() {
           <Login title="Вход" errorMessage={errorMessage} 
             isValid={checkInputValidity} onLogin={handleLogin} 
             submitBtn={loading ? 'Вход...' : 'Войти'} />
+        </Route>
+        <Route path="*">
+          <PageNotFound />
         </Route>
       </Switch>
 
