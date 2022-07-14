@@ -1,0 +1,12 @@
+.not-found {
+  min-height: calc(100vh - (120px + 148px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+@media screen and (max-width: 540px) {
+  .not-found {
+    min-height: calc(100vh - (86px + 101px));
+  }
+}

@@ -1,0 +1,25 @@
+.not-found__back-button {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 24px;
+  margin: 30px 0 0;
+  color: #ffffff;
+  text-decoration: none;
+  border: 1px solid #ffffff;
+  padding: 10px 0;
+  width: 120px;
+  text-align: center;
+  border-radius: 3px;
+}
+
+.not-found__back-button:hover {
+  opacity: .7;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 540px) {
+  .not-found__back-button {
+    font-size: 20px;
+    line-height: 22px;
+  }
+}
