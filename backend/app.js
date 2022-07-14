@@ -6,16 +6,16 @@ const helmet = require('helmet');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
-const { errors } = require('celebrate');
 
 const usersRoute = require('./routes/users');
 const cardsRoute = require('./routes/cards');
 const auth = require('./middlewares/auth');
 
-const NotFoundError = require('./errors/NotFoundError');
 const { createUser, login, logout } = require('./controllers/users');
 const { allowedCors } = require('./utils/constants');
-const { registerValidation, loginValidation } = require('./utils/validation');
+const { limiter } = require('./utils/limiter');
+const { registerValidation, loginValidation, joiErrors } = require('./utils/validation');
+const { errorsHandler, notFound } = require('./utils/errorsHandler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 mongoose.connect('mongodb://localhost:27017/mestodb');
@@ -35,6 +35,9 @@ app.use(cors({
   credentials: true,
 }));
 
+app.use(limiter);
+
+// потом удалить
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
@@ -42,7 +45,6 @@ app.get('/crash-test', () => {
 });
 
 app.post('/signin', loginValidation, login);
-
 app.post('/signup', registerValidation, createUser);
 
 app.use('/users', auth, usersRoute);
@@ -50,21 +52,12 @@ app.use('/cards', auth, cardsRoute);
 
 app.post('/signout', auth, logout);
 
-app.use((req, res, next) => {
-  next(new NotFoundError('Путь не найден.'));
-});
+app.use(notFound);
 
 app.use(errorLogger);
 
-app.use(errors({ message: 'Переданы некорректные данные.' }));
+app.use(joiErrors);
 
-// eslint-disable-next-line no-unused-vars
-app.use((err, req, res, next) => {
-  const { statusCode = 500, message } = err;
-
-  res.status(statusCode).send({
-    message: statusCode === 500 ? 'На сервере произошла ошибка' : message,
-  });
-});
+app.use(errorsHandler);
 
 app.listen(PORT);

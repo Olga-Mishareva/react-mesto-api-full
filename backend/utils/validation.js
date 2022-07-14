@@ -1,4 +1,4 @@
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 const { linkRegex, emailRegex } = require('./constants');
 
 module.exports.registerValidation = celebrate({
@@ -43,3 +43,5 @@ module.exports.cardInfoValidation = celebrate({
     link: Joi.string().required().regex(linkRegex),
   }),
 });
+
+module.exports.joiErrors = errors({ message: 'Переданы некорректные данные.' });
