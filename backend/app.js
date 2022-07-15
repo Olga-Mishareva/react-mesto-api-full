@@ -1,11 +1,11 @@
-require('dotenv').config();
+require('dotenv').config(); // для доступа к переменным окружениия
 
 const express = require('express');
 const mongoose = require('mongoose');
-const helmet = require('helmet');
-const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
+const helmet = require('helmet'); // фильтр заголовков
+const bodyParser = require('body-parser'); // парсит боди в json
+const cookieParser = require('cookie-parser'); // доставать куки
+const cors = require('cors'); // заголовки для кросплатформенных запросов
 
 const usersRoute = require('./routes/users');
 const cardsRoute = require('./routes/cards');
@@ -35,7 +35,7 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(limiter);
+app.use(limiter); // для лимитирования количества запросов
 
 // потом удалить
 app.get('/crash-test', () => {
@@ -52,12 +52,12 @@ app.use('/cards', auth, cardsRoute);
 
 app.post('/signout', auth, logout);
 
-app.use(notFound);
+app.use(notFound); // запрос на неизвестный путь
 
 app.use(errorLogger);
 
-app.use(joiErrors);
+app.use(joiErrors); // обработчик ошибок joi-валидации
 
-app.use(errorsHandler);
+app.use(errorsHandler); // конечный обработчик ошибок
 
 app.listen(PORT);
