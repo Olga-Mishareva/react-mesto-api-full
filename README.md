@@ -18,4 +18,4 @@ It's possible to change profile name and description, add, delete and like photo
   
 Public IP: 51.250.92.192
 
-Show the project[https://mesto.om.nomoredomains.xyz/]
+[Show the project](https://mesto.om.nomoredomains.xyz/)
