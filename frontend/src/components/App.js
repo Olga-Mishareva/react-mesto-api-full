@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react';
 import { Route, Switch, useHistory, Redirect } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute';
-import Header from "./Header";
+import Header from './Header';
 import Main from './Main';
-import Footer from "./Footer";
-import Login from "./Login";
-import Register from "./Register";
-import ImagePopup from "./ImagePopup";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarPopup from "./EditAvatarPopup";
-import AddPlacePopup from "./AddPlacePopup";
-import ConfirmPopup from "./ConfirmPopup";
-import api from "../utils/api";
-import { register, authorize, getContent, logout } from "../utils/auth";
+import Footer from './Footer';
+import Login from './Login';
+import Register from './Register';
+import ImagePopup from './ImagePopup';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarPopup from './EditAvatarPopup';
+import AddPlacePopup from './AddPlacePopup';
+import ConfirmPopup from './ConfirmPopup';
+import api from '../utils/api';
+import { register, authorize, getContent, logout } from '../utils/auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import InfoTooltip from "./InfoTooltip";
+import InfoTooltip from './InfoTooltip';
+import { EN, RU } from '../utils/constants';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -36,6 +37,7 @@ function App() {
   const [email, setEmail] = useState('');
   const [isSignup, setIsSignup] = useState(false);
   const [signupError, setSignupError] = useState('');
+  const [isLangEn, setIsLangEn] = useState(true);
 
   const history = useHistory();
 
@@ -137,8 +139,6 @@ function App() {
         setCards(() => cards.map(el => {
           return el._id === likedCard._id ? likedCard : el;
         }));
-        // перебираем массив cards и заменяем в стейте только одну карточку, 
-        // id которой совпадает с лайкнутой картой
       })
       .catch(err => console.log(err));
   }
@@ -194,7 +194,6 @@ function App() {
     setLoading(true); 
     return register(password, email)
       .then(res => {
-        console.log(res);
         if(res._id) {
           setIsSignup(true);
           setIsRegisterPopupOpen(true);
@@ -209,7 +208,9 @@ function App() {
         }                 
       })
       .catch((err) => {
-        setSignupError(err.message);
+        setSignupError(() => !isLangEn 
+        ? err.message : err.statusCode === 500 
+        ? EN.serverErr : EN.conflictErr); 
         setIsSignup(false);
         setIsRegisterPopupOpen(true);
       })
@@ -221,16 +222,16 @@ function App() {
     return authorize(password, email)
       .then(data => {
         if(data.email) {
-          // добавляем в localStorage, чтобы проверять, 
-          // нужно ли делать запрос по /users/me
           localStorage.setItem('email', data.email);
           checkToken();
         }
         checkToken();
       })
       .catch(err => {
-        console.log(err.message);
-        setSignupError('Некорректный email или пароль');
+        setSignupError(() => !isLangEn 
+          ? err.message : err.statusCode === 500 
+          ? EN.serverErr : err.code === 400 
+          ? EN.badRequestErr : EN.unauthErr);
         setIsSignup(false);
         setIsRegisterPopupOpen(true);
       })
@@ -238,14 +239,17 @@ function App() {
   }
 
   function checkToken() {
-    // нужно ли делать запрос по /users/me
     if(localStorage.getItem('email')) {
       getContent()
         .then(res => {
           setEmail(res.email);
           setLoggedIn(true);
         })
-        .catch(err => console.log(err.message)); 
+        .catch(err => {
+          setSignupError('Authorisation is required');
+          setIsSignup(false);
+          setIsRegisterPopupOpen(true);
+        }); 
     }
   }
 
@@ -272,15 +276,18 @@ function App() {
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}> {/* значение, которое передается всем дочерним элементам */}
-    <div className="page">
+    <CurrentUserContext.Provider value={currentUser}>
+    <div className='page'>
       <Header 
-        loggedIn={loggedIn} email={email} 
-        onSignOut={handleSignOut} resetValidation={resetValidation}>
+        loggedIn={loggedIn}
+        email={email} 
+        isEn={isLangEn}
+        onSignOut={handleSignOut}
+        resetValidation={resetValidation}>
       </Header>
 
       <Switch>
-        <ProtectedRoute exact path="/" loggedIn={loggedIn}>
+        <ProtectedRoute exact path='/' loggedIn={loggedIn}>
           <Main
           cards={cards}
           onEditAvatar={handleEditAvatarClick} 
@@ -291,20 +298,28 @@ function App() {
           onConfirmDelete={handleDeleteClick}/>
         </ProtectedRoute>
 
-        <Route path="/sign-up">
-          <Register title="Регистрация" errorMessage={errorMessage} 
-            isValid={checkInputValidity} onRegister={handleRegister} 
+        <Route path='/sign-up'>
+          <Register 
+            title={(isLangEn ? EN : RU).register} 
+            errorMessage={errorMessage}
+            isEn={isLangEn} 
+            isValid={checkInputValidity} 
+            onRegister={handleRegister} 
             resetValidation={resetValidation} 
-            submitBtn={loading ? 'Регистрация...' : 'Зарегистрироваться'} />
+            submitBtn={loading ? (isLangEn ? EN : RU).registration : (isLangEn ? EN : RU).register} />
         </Route>
 
-        <Route path="/sign-in">
-          <Login title="Вход" errorMessage={errorMessage} 
-            isValid={checkInputValidity} onLogin={handleLogin} 
-            submitBtn={loading ? 'Вход...' : 'Войти'} />
+        <Route path='/sign-in'>
+          <Login 
+            title={(isLangEn ? EN : RU).login} 
+            errorMessage={errorMessage}
+            isEn={isLangEn} 
+            isValid={checkInputValidity} 
+            onLogin={handleLogin} 
+            submitBtn={loading ? (isLangEn ? EN : RU).logging : (isLangEn ? EN : RU).login} />
         </Route>
-        <Route path="*">
-          {loggedIn ? <Redirect to="/" /> : <Redirect to="/sign-in" />}
+        <Route path='*'>
+          {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
         </Route>
       </Switch>
 
@@ -312,6 +327,7 @@ function App() {
         onClose={closeAllPopups} 
         isOpen={isEditAvatarPopupOpen}
         loggedIn={loggedIn}
+        isEn={isLangEn}
         onUpdateAvatar={handleUpdateAvatar}
         loading={loading}
         errorMessage={errorMessage}
@@ -321,6 +337,7 @@ function App() {
       <EditProfilePopup 
         onClose={closeAllPopups} 
         isOpen={isEditProfilePopupOpen}
+        isEn={isLangEn}
         onUpdateUser={handleUpdateUser}
         loading={loading}
         errorMessage={errorMessage}
@@ -331,6 +348,7 @@ function App() {
         onClose={closeAllPopups} 
         isOpen={isAddPlacePopupOpen}
         loggedIn={loggedIn}
+        isEn={isLangEn}
         onAddCard={handleAddPlaceSubmit}
         loading={loading}
         errorMessage={errorMessage}
@@ -339,6 +357,7 @@ function App() {
 
       <ConfirmPopup 
         card={toRemove}
+        isEn={isLangEn}
         onClose={closeAllPopups} 
         isOpen={isConfirmPopupOpen}
         onDeleteCard={handleCardDelete}
@@ -346,13 +365,16 @@ function App() {
       </ConfirmPopup>
 
       {selectedCard && 
-        <ImagePopup card={selectedCard} onClose={closeAllPopups}
+        <ImagePopup 
+          card={selectedCard} 
+          onClose={closeAllPopups}
           isOpen={selectedCard ? 'popup_opened' : ''}/>
       }
 
       {isRegisterPopupOpen && 
         <InfoTooltip 
           signupError={signupError}
+          isEn={isLangEn}
           isSignup={isSignup}
           isOpen={isRegisterPopupOpen} 
           onClose={closeAllPopups}>

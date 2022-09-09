@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
-import PopupWithForm from "./PopupWithForm";
-import Validation from "./Validation";
+import { useEffect, useState } from 'react';
+import PopupWithForm from './PopupWithForm';
+import { EN, RU }  from '../utils/constants';
+import Validation from './Validation';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, loading, loggedIn, isValid, errorMessage }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, loading, loggedIn, isValid, isEn, errorMessage }) {
   const [avatar, setAvatar] = useState('');
 
   function handleAvatar(e) {
@@ -24,14 +25,14 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, loading, loggedIn, i
 
   return (
     <PopupWithForm 
-        title="Обновить аватар" name="edit-avatar" 
+        title={(isEn ? EN : RU).updateAvatar} name='edit-avatar' 
         onClose={onClose} isOpen={isOpen} isValid={isValid}
-        submitBtn={loading ? 'Сохраниение...' : 'Сохранить'}
+        submitBtn={loading ? (isEn ? EN : RU).saving : (isEn ? EN : RU).saveBtn}
         onSubmit={handleSubmit}> 
 
-        <input className="popup__input popup__input_type_avatar" value={avatar} type="url" required 
-        onFocus={handleFocus} name="avatar" placeholder="Ссылка на картинку" onChange={handleAvatar}/>
-        <Validation errorMessage={errorMessage} name="avatar"/>
+        <input className='popup__input popup__input_type_avatar' value={avatar} type='url' required 
+        onFocus={handleFocus} name='avatar' placeholder={(isEn ? EN : RU).avatarLink} onChange={handleAvatar}/>
+        <Validation errorMessage={errorMessage} name='avatar'/>
       </PopupWithForm>
   ) 
 }
