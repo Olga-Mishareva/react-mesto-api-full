@@ -6,6 +6,7 @@
   margin: 0;
   color: #ffffff;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 .header__link_visible:hover {
