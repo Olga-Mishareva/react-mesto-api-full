@@ -1,7 +1,10 @@
+const { CONFLICT, conflict } = require('../utils/constants');
+
 class ConflictError extends Error {
-  constructor(message) {
+  constructor(message = conflict) {
     super(message);
-    this.statusCode = 409;
+    this.statusCode = CONFLICT;
+    this.message = message;
   }
 }
 
