@@ -1,9 +1,8 @@
 import { useState, useRef} from 'react';
 import Validation from './Validation';
-import { EN, RU }  from '../utils/constants';
 import useCheckButtonState from '../utils/useCheckButtonState';
 
-function Login({ title, onLogin, isValid, submitBtn, isEn, errorMessage }) {
+function Login({ title, onLogin, isValid, submitBtn, lang, errorMessage }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const authRef = useRef();
@@ -35,7 +34,7 @@ function Login({ title, onLogin, isValid, submitBtn, isEn, errorMessage }) {
         <Validation errorMessage={errorMessage} name='email'/>   
 
         <input className='auth__input auth__input_type_password' value={password} type='password' required minLength='4'
-          onFocus={handleFocus} maxLength='20' name='password' placeholder={(isEn ? EN : RU).password} onChange={handlePassword}/>
+          onFocus={handleFocus} maxLength='20' name='password' placeholder={lang.password} onChange={handlePassword}/>
         <Validation errorMessage={errorMessage} name='password'/>
         <button className={`auth__submit-button auth__submit-button_${subminButtonState ? '' : 'disabled'}`} 
           type='submit' disabled={!subminButtonState} form='login'>{submitBtn}</button>

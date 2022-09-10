@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import PopupWithForm from './PopupWithForm';
-import { EN, RU }  from '../utils/constants';
 import Validation from './Validation';
 
-function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, loading, loggedIn, isValid, isEn, errorMessage }) {
+function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, loading, loggedIn, isValid, lang, errorMessage }) {
   const [avatar, setAvatar] = useState('');
 
   function handleAvatar(e) {
@@ -25,13 +24,13 @@ function EditAvatarPopup({ isOpen, onClose, onUpdateAvatar, loading, loggedIn, i
 
   return (
     <PopupWithForm 
-        title={(isEn ? EN : RU).updateAvatar} name='edit-avatar' 
+        title={lang.updateAvatar} name='edit-avatar' 
         onClose={onClose} isOpen={isOpen} isValid={isValid}
-        submitBtn={loading ? (isEn ? EN : RU).saving : (isEn ? EN : RU).saveBtn}
+        submitBtn={loading ? lang.saving : lang.saveBtn}
         onSubmit={handleSubmit}> 
 
         <input className='popup__input popup__input_type_avatar' value={avatar} type='url' required 
-        onFocus={handleFocus} name='avatar' placeholder={(isEn ? EN : RU).avatarLink} onChange={handleAvatar}/>
+        onFocus={handleFocus} name='avatar' placeholder={lang.avatarLink} onChange={handleAvatar}/>
         <Validation errorMessage={errorMessage} name='avatar'/>
       </PopupWithForm>
   ) 

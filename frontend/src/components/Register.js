@@ -1,10 +1,9 @@
 import { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { EN, RU }  from '../utils/constants';
 import Validation from './Validation';
 import useCheckButtonState from '../utils/useCheckButtonState';
 
-function Register({ title, onRegister, isValid, submitBtn, isEn, errorMessage, resetValidation }) {
+function Register({ title, onRegister, isValid, submitBtn, lang, errorMessage, resetValidation }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const authRef = useRef();
@@ -36,14 +35,14 @@ function Register({ title, onRegister, isValid, submitBtn, isEn, errorMessage, r
         <Validation errorMessage={errorMessage} name='email'/>   
 
         <input className='auth__input auth__input_type_password' value={password} type='password' required minLength='4'
-          onFocus={handleFocus} maxLength='20' name='password' placeholder={(isEn ? EN : RU).password} onChange={handlePassword}/>
+          onFocus={handleFocus} maxLength='20' name='password' placeholder={lang.password} onChange={handlePassword}/>
         <Validation errorMessage={errorMessage} name='password'/>
         <button className={`auth__submit-button auth__submit-button_${subminButtonState ? '' : 'disabled'}`} 
           type='submit' disabled={!subminButtonState} form='register'>{submitBtn}</button>
 
           <div className='auth__login-offer auth__login-offer_visible'>
             <Link to='/sign-in' className='auth__login-link' onClick={resetValidation}>
-              {`${(isEn ? EN : RU).registered} ${(isEn ? EN : RU).login}`}
+              {`${lang.registered} ${lang.login}`}
             </Link>
           </div>
       </form>

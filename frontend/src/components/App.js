@@ -15,7 +15,7 @@ import api from '../utils/api';
 import { register, authorize, getContent, logout } from '../utils/auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import InfoTooltip from './InfoTooltip';
-import { EN, RU } from '../utils/constants';
+import { EN } from '../utils/constants';
 
 function App() {
   const [currentUser, setCurrentUser] = useState({});
@@ -37,9 +37,13 @@ function App() {
   const [email, setEmail] = useState('');
   const [isSignup, setIsSignup] = useState(false);
   const [signupError, setSignupError] = useState('');
-  const [isLangEn, setIsLangEn] = useState(true);
+  const [lang, setLang] = useState({});
 
   const history = useHistory();
+
+  useEffect(() => {
+    setLang(EN);
+  }, [])
 
   // ============================ AVATAR ======================================
 
@@ -208,9 +212,7 @@ function App() {
         }                 
       })
       .catch((err) => {
-        setSignupError(() => !isLangEn 
-        ? err.message : err.statusCode === 500 
-        ? EN.serverErr : EN.conflictErr); 
+        setSignupError(() => err.statusCode === 500 ? lang.serverErr : lang.conflictErr); 
         setIsSignup(false);
         setIsRegisterPopupOpen(true);
       })
@@ -228,10 +230,9 @@ function App() {
         checkToken();
       })
       .catch(err => {
-        setSignupError(() => !isLangEn 
-          ? err.message : err.statusCode === 500 
-          ? EN.serverErr : err.code === 400 
-          ? EN.badRequestErr : EN.unauthErr);
+        setSignupError(() => err.statusCode === 500 
+          ? lang.serverErr : err.code === 400 
+          ? lang.badRequestErr : lang.authErr);
         setIsSignup(false);
         setIsRegisterPopupOpen(true);
       })
@@ -281,7 +282,7 @@ function App() {
       <Header 
         loggedIn={loggedIn}
         email={email} 
-        isEn={isLangEn}
+        lang={lang}
         onSignOut={handleSignOut}
         resetValidation={resetValidation}>
       </Header>
@@ -300,23 +301,23 @@ function App() {
 
         <Route path='/sign-up'>
           <Register 
-            title={(isLangEn ? EN : RU).register} 
+            title={lang.register} 
             errorMessage={errorMessage}
-            isEn={isLangEn} 
+            lang={lang} 
             isValid={checkInputValidity} 
             onRegister={handleRegister} 
             resetValidation={resetValidation} 
-            submitBtn={loading ? (isLangEn ? EN : RU).registration : (isLangEn ? EN : RU).register} />
+            submitBtn={loading ? lang.registration : lang.register} />
         </Route>
 
         <Route path='/sign-in'>
           <Login 
-            title={(isLangEn ? EN : RU).login} 
+            title={lang.login} 
             errorMessage={errorMessage}
-            isEn={isLangEn} 
+            lang={lang} 
             isValid={checkInputValidity} 
             onLogin={handleLogin} 
-            submitBtn={loading ? (isLangEn ? EN : RU).logging : (isLangEn ? EN : RU).login} />
+            submitBtn={loading ? lang.logging : lang.login} />
         </Route>
         <Route path='*'>
           {loggedIn ? <Redirect to='/' /> : <Redirect to='/sign-in' />}
@@ -327,7 +328,7 @@ function App() {
         onClose={closeAllPopups} 
         isOpen={isEditAvatarPopupOpen}
         loggedIn={loggedIn}
-        isEn={isLangEn}
+        lang={lang}
         onUpdateAvatar={handleUpdateAvatar}
         loading={loading}
         errorMessage={errorMessage}
@@ -337,7 +338,7 @@ function App() {
       <EditProfilePopup 
         onClose={closeAllPopups} 
         isOpen={isEditProfilePopupOpen}
-        isEn={isLangEn}
+        lang={lang}
         onUpdateUser={handleUpdateUser}
         loading={loading}
         errorMessage={errorMessage}
@@ -348,7 +349,7 @@ function App() {
         onClose={closeAllPopups} 
         isOpen={isAddPlacePopupOpen}
         loggedIn={loggedIn}
-        isEn={isLangEn}
+        lang={lang}
         onAddCard={handleAddPlaceSubmit}
         loading={loading}
         errorMessage={errorMessage}
@@ -357,7 +358,7 @@ function App() {
 
       <ConfirmPopup 
         card={toRemove}
-        isEn={isLangEn}
+        lang={lang}
         onClose={closeAllPopups} 
         isOpen={isConfirmPopupOpen}
         onDeleteCard={handleCardDelete}
@@ -374,7 +375,7 @@ function App() {
       {isRegisterPopupOpen && 
         <InfoTooltip 
           signupError={signupError}
-          isEn={isLangEn}
+          lang={lang}
           isSignup={isSignup}
           isOpen={isRegisterPopupOpen} 
           onClose={closeAllPopups}>

@@ -1,10 +1,9 @@
 import React from 'react';
-import { EN, RU }  from '../utils/constants';
 import useEscapeClick from '../utils/useEscapeClick';
 import confirm from '../images/confirm.svg';
 import reject from '../images/reject.svg';
 
-function InfoTooltip({ isSignup, signupError, isEn, isOpen, onClose }) {
+function InfoTooltip({ isSignup, signupError, lang, isOpen, onClose }) {
   const image = isSignup ? confirm : reject;
 
   useEscapeClick(isOpen, onClose);
@@ -16,7 +15,7 @@ function InfoTooltip({ isSignup, signupError, isEn, isOpen, onClose }) {
         <div className='tooltip__image' style={{ backgroundImage: `url(${image})` }}>
         </div>
         <h2 className={`tooltip__message tooltip__message_type`}>
-          {isSignup ? `${(isEn ? EN : RU).isSignup}` : `${signupError}.`}
+          {isSignup ? `${lang.isSignup}` : `${signupError}.`}
         </h2>
     </div>
    </div>

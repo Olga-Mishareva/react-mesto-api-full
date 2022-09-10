@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 import PopupWithForm from './PopupWithForm';
-import { EN, RU }  from '../utils/constants';
 import Validation from './Validation';
 
-function EditProfilePopup({ isOpen, onClose, onUpdateUser, loading, isValid, isEn, errorMessage }) {
+function EditProfilePopup({ isOpen, onClose, onUpdateUser, loading, isValid, lang, errorMessage }) {
   const [name, setName] = useState(''); 
   const [description, setDescription] = useState('');
   const currentUser = React.useContext(CurrentUserContext);
@@ -35,17 +34,17 @@ function EditProfilePopup({ isOpen, onClose, onUpdateUser, loading, isValid, isE
 
   return (
     <PopupWithForm 
-      title={(isEn ? EN : RU).editProfile} name='edit-profile' 
+      title={lang.editProfile} name='edit-profile' 
       onClose={onClose} isOpen={isOpen} isValid={isValid}
-      submitBtn={loading ? (isEn ? EN : RU).saving : (isEn ? EN : RU).saveBtn} 
+      submitBtn={loading ? lang.saving : lang.saveBtn} 
       onSubmit={handleSubmit}>
 
       <input className='popup__input popup__input_type_username' value={name || ''} type='text' required minLength='2' maxLength='40'
-        onFocus={handleFocus} name='username' placeholder={(isEn ? EN : RU).profileName} onChange={handleName}/>
+        onFocus={handleFocus} name='username' placeholder={lang.profileName} onChange={handleName}/>
       <Validation errorMessage={errorMessage} name='username'/>   
 
       <input className='popup__input popup__input_type_about' value={description || ''} type='text' required minLength='2'
-        onFocus={handleFocus} maxLength='200' name='about' placeholder={(isEn ? EN : RU).profileAbout} onChange={handleDescription}/>
+        onFocus={handleFocus} maxLength='200' name='about' placeholder={lang.profileAbout} onChange={handleDescription}/>
       <Validation errorMessage={errorMessage} name='about'/>
     </PopupWithForm>
   )

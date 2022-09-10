@@ -1,7 +1,6 @@
 import PopupWithForm from './PopupWithForm';
-import { EN, RU }  from '../utils/constants';
 
-function ConfirmPopup({ card, isOpen, onClose, onDeleteCard, isEn, loading }) {
+function ConfirmPopup({ card, isOpen, onClose, onDeleteCard, lang, loading }) {
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -10,8 +9,8 @@ function ConfirmPopup({ card, isOpen, onClose, onDeleteCard, isEn, loading }) {
 
   return (
     <PopupWithForm 
-      title={(isEn ? EN : RU).confirmQuestion} name='delete-place' 
-      submitBtn={loading ? (isEn ? EN : RU).removing : (isEn ? EN : RU).confirm}
+      title={lang.confirmQuestion} name='delete-place' 
+      submitBtn={loading ? lang.removing : lang.confirm}
       onClose={onClose} isOpen={isOpen} 
       onSubmit={handleSubmit}/>
   )

@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import PopupWithForm from './PopupWithForm';
-import { EN, RU }  from '../utils/constants';
 import Validation from './Validation';
 
-function AddPlacePopup({ onClose, isOpen, loading, loggedIn, isValid, errorMessage, isEn, onAddCard }) {
+function AddPlacePopup({ onClose, isOpen, loading, loggedIn, isValid, errorMessage, lang, onAddCard }) {
   const [title, setTitle] = useState('');
   const [image, setImage] = useState('');
 
@@ -35,17 +34,17 @@ function AddPlacePopup({ onClose, isOpen, loading, loggedIn, isValid, errorMessa
 
   return (
     <PopupWithForm 
-        title={(isEn ? EN : RU).addPlace} name='add-place' 
+        title={lang.addPlace} name='add-place' 
         onClose={onClose} isOpen={isOpen} isValid={isValid}
-        submitBtn={loading ? (isEn ? EN : RU).saving : (isEn ? EN : RU).createBtn}
+        submitBtn={loading ? lang.saving : lang.createBtn}
         onSubmit={handleSubmit}> 
 
         <input className='popup__input popup__input_type_place' value={title} type='text' required minLength='2'
-          onFocus={handleFocus} maxLength='40' name='place' placeholder={(isEn ? EN : RU).placeName} onChange={handleTitle}/>
+          onFocus={handleFocus} maxLength='40' name='place' placeholder={lang.placeName} onChange={handleTitle}/>
         <Validation errorMessage={errorMessage} name='place'/>
 
         <input className='popup__input popup__input_type_img' value={image} type='url' required name='img'
-          onFocus={handleFocus} placeholder={(isEn ? EN : RU).placeLink} onChange={handleImage}/>
+          onFocus={handleFocus} placeholder={lang.placeLink} onChange={handleImage}/>
         <Validation errorMessage={errorMessage} name='img'/>
       </PopupWithForm>
   )

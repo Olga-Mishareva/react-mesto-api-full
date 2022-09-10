@@ -25,8 +25,10 @@ export const EN = {
   badRequestErr: 'Invalid data',
   conflictErr: 'This email already exists',
   forbiddenErr: 'No rights for this action',
-  unauthErr: 'Invalid email or password',
-  serverErr: 'Server error'
+  authErr: 'Invalid email or password',
+  serverErr: 'Server error',
+  pathNotFound: 'Path not found',
+  unauthorized: 'Authorisation is required'
 }
 
 export const RU = {
@@ -56,6 +58,8 @@ export const RU = {
   badRequestErr: 'Данные не найдены',
   conflictErr: 'Такой email уже существует',
   forbiddenErr: 'Нет прав для данного действия',
-  unauthErr: 'Некорректный email или пароль',
-  serverErr: 'Произошла ошибка на сервере'
+  authErr: 'Некорректный email или пароль',
+  serverErr: 'Произошла ошибка на сервере',
+  pathNotFound: 'Путь не найден',
+  unauthorized: 'Необходима авторизация'
 }

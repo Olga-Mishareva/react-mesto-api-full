@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { EN, RU }  from '../utils/constants';
-// import logo from '../images/logo.svg';
 import closeBtn from '../images/close-icon.svg';
 import burgerBtn from '../images/burger-menu.svg';
 
-function Header({ loggedIn, email,  isEn, resetValidation, onSignOut }) {
+function Header({ loggedIn, email,  lang, resetValidation, onSignOut }) {
   const [isInvisible, setIsInvisible] = useState(true);
   const mobileButton = isInvisible ? burgerBtn : closeBtn;
 
@@ -22,7 +20,6 @@ function Header({ loggedIn, email,  isEn, resetValidation, onSignOut }) {
       <div className={`header__container header__container${loggedIn ? '_logged' : ''}`}>
         <div className={`header__logo-container header__logo-container${loggedIn ? '_logged' : ''}`}>
           <span className='logo-word'>Mesto</span>
-          {/* <img className='logo' src={logo} alt='Logo'/> */}
           <button className={`header__burger-btn header__burger-btn${loggedIn ? '' : '_invisible'}}`} type='button' 
             style={{ backgroundImage: `url(${loggedIn ? mobileButton : ''})` }}
             onMouseDown={handleBurgerButton}></button>
@@ -33,20 +30,20 @@ function Header({ loggedIn, email,  isEn, resetValidation, onSignOut }) {
           <p className='header__email'>{email}</p>
           <button onMouseDown={onSignOut} 
             className={`header__logout header__logout${loggedIn ? '_active' : ''}`}>
-            {(isEn ? EN : RU).logout}
+            {lang.logout}
           </button>
           <nav className={`header__nav header__nav${!loggedIn ? '_active' : ''}`}>
             <NavLink to='/sign-up'
               activeClassName='header__link'
               className='header__link_visible' 
               onClick={resetValidation}>
-                {(isEn ? EN : RU).register}
+                {lang.register}
             </NavLink>
             <NavLink to='/sign-in' 
               activeClassName='header__link' 
               className='header__link_visible' 
               onClick={resetValidation}>
-                {(isEn ? EN : RU).login}
+                {lang.login}
             </NavLink>
           </nav>  
         </div>
